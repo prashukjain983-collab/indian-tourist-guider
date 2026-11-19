@@ -10,33 +10,107 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedExploreRouteImport } from './routes/_authenticated/explore'
+import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
+import { Route as ApiCityInfoRouteImport } from './routes/api/city-info'
+import { Route as AuthenticatedStateSlugRouteImport } from './routes/_authenticated/state.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedExploreRoute = AuthenticatedExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedSavedRoute = AuthenticatedSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const ApiCityInfoRoute = ApiCityInfoRouteImport.update({
+  id: '/api/city-info',
+  path: '/api/city-info',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedStateSlugRoute = AuthenticatedStateSlugRouteImport.update({
+  id: '/state/$slug',
+  path: '/state/$slug',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/explore': typeof AuthenticatedExploreRoute
+  '/saved': typeof AuthenticatedSavedRoute
+  '/api/city-info': typeof ApiCityInfoRoute
+  '/state/$slug': typeof AuthenticatedStateSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/explore': typeof AuthenticatedExploreRoute
+  '/saved': typeof AuthenticatedSavedRoute
+  '/api/city-info': typeof ApiCityInfoRoute
+  '/state/$slug': typeof AuthenticatedStateSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/explore': typeof AuthenticatedExploreRoute
+  '/_authenticated/saved': typeof AuthenticatedSavedRoute
+  '/api/city-info': typeof ApiCityInfoRoute
+  '/_authenticated/state/$slug': typeof AuthenticatedStateSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/reset-password'
+    | '/explore'
+    | '/saved'
+    | '/api/city-info'
+    | '/state/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/reset-password'
+    | '/explore'
+    | '/saved'
+    | '/api/city-info'
+    | '/state/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/reset-password'
+    | '/_authenticated/explore'
+    | '/_authenticated/saved'
+    | '/api/city-info'
+    | '/_authenticated/state/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  ApiCityInfoRoute: typeof ApiCityInfoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +122,72 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/explore': {
+      id: '/_authenticated/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof AuthenticatedExploreRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/saved': {
+      id: '/_authenticated/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof AuthenticatedSavedRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/api/city-info': {
+      id: '/api/city-info'
+      path: '/api/city-info'
+      fullPath: '/api/city-info'
+      preLoaderRoute: typeof ApiCityInfoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/state/$slug': {
+      id: '/_authenticated/state/$slug'
+      path: '/state/$slug'
+      fullPath: '/state/$slug'
+      preLoaderRoute: typeof AuthenticatedStateSlugRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedExploreRoute: typeof AuthenticatedExploreRoute
+  AuthenticatedSavedRoute: typeof AuthenticatedSavedRoute
+  AuthenticatedStateSlugRoute: typeof AuthenticatedStateSlugRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedExploreRoute: AuthenticatedExploreRoute,
+  AuthenticatedSavedRoute: AuthenticatedSavedRoute,
+  AuthenticatedStateSlugRoute: AuthenticatedStateSlugRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  ResetPasswordRoute: ResetPasswordRoute,
+  ApiCityInfoRoute: ApiCityInfoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
