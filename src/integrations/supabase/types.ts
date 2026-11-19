@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      chat_messages: {
+        Row: {
+          created_at: string
+          id: string
+          message: Json
+          message_id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: Json
+          message_id: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: Json
+          message_id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      city_history: {
+        Row: {
+          city_name: string
+          id: string
+          state_name: string
+          user_id: string
+          viewed_at: string
+        }
+        Insert: {
+          city_name: string
+          id?: string
+          state_name: string
+          user_id: string
+          viewed_at?: string
+        }
+        Update: {
+          city_name?: string
+          id?: string
+          state_name?: string
+          user_id?: string
+          viewed_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -38,26 +89,41 @@ export type Database = {
       saved_places: {
         Row: {
           ai_info: string
+          budget: string | null
           city_name: string
           created_at: string
+          from_location: string | null
           id: string
+          kind: string
           state_name: string
+          transport_mode: string | null
+          trip_plan: string | null
           user_id: string
         }
         Insert: {
           ai_info: string
+          budget?: string | null
           city_name: string
           created_at?: string
+          from_location?: string | null
           id?: string
+          kind?: string
           state_name: string
+          transport_mode?: string | null
+          trip_plan?: string | null
           user_id: string
         }
         Update: {
           ai_info?: string
+          budget?: string | null
           city_name?: string
           created_at?: string
+          from_location?: string | null
           id?: string
+          kind?: string
           state_name?: string
+          transport_mode?: string | null
+          trip_plan?: string | null
           user_id?: string
         }
         Relationships: []

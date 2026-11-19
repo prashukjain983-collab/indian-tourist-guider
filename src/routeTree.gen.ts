@@ -15,6 +15,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedExploreRouteImport } from './routes/_authenticated/explore'
 import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
 import { Route as ApiCityInfoRouteImport } from './routes/api/city-info'
+import { Route as ApiTripPlanRouteImport } from './routes/api/trip-plan'
 import { Route as AuthenticatedStateSlugRouteImport } from './routes/_authenticated/state.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -46,6 +47,11 @@ const ApiCityInfoRoute = ApiCityInfoRouteImport.update({
   path: '/api/city-info',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiTripPlanRoute = ApiTripPlanRouteImport.update({
+  id: '/api/trip-plan',
+  path: '/api/trip-plan',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedStateSlugRoute = AuthenticatedStateSlugRouteImport.update({
   id: '/state/$slug',
   path: '/state/$slug',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/explore': typeof AuthenticatedExploreRoute
   '/saved': typeof AuthenticatedSavedRoute
   '/api/city-info': typeof ApiCityInfoRoute
+  '/api/trip-plan': typeof ApiTripPlanRoute
   '/state/$slug': typeof AuthenticatedStateSlugRoute
 }
 export interface FileRoutesByTo {
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/explore': typeof AuthenticatedExploreRoute
   '/saved': typeof AuthenticatedSavedRoute
   '/api/city-info': typeof ApiCityInfoRoute
+  '/api/trip-plan': typeof ApiTripPlanRoute
   '/state/$slug': typeof AuthenticatedStateSlugRoute
 }
 export interface FileRoutesById {
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/_authenticated/explore': typeof AuthenticatedExploreRoute
   '/_authenticated/saved': typeof AuthenticatedSavedRoute
   '/api/city-info': typeof ApiCityInfoRoute
+  '/api/trip-plan': typeof ApiTripPlanRoute
   '/_authenticated/state/$slug': typeof AuthenticatedStateSlugRoute
 }
 export interface FileRouteTypes {
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
     | '/explore'
     | '/saved'
     | '/api/city-info'
+    | '/api/trip-plan'
     | '/state/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
     | '/explore'
     | '/saved'
     | '/api/city-info'
+    | '/api/trip-plan'
     | '/state/$slug'
   id:
     | '__root__'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
     | '/_authenticated/explore'
     | '/_authenticated/saved'
     | '/api/city-info'
+    | '/api/trip-plan'
     | '/_authenticated/state/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -111,6 +123,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
   ApiCityInfoRoute: typeof ApiCityInfoRoute
+  ApiTripPlanRoute: typeof ApiTripPlanRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -157,6 +170,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiCityInfoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/trip-plan': {
+      id: '/api/trip-plan'
+      path: '/api/trip-plan'
+      fullPath: '/api/trip-plan'
+      preLoaderRoute: typeof ApiTripPlanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/state/$slug': {
       id: '/_authenticated/state/$slug'
       path: '/state/$slug'
@@ -188,6 +208,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
   ApiCityInfoRoute: ApiCityInfoRoute,
+  ApiTripPlanRoute: ApiTripPlanRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
