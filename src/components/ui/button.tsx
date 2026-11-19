@@ -17,8 +17,8 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         saffron:
-          "bg-saffron text-saffron-foreground shadow-sm hover:brightness-105 hover:shadow-lift font-semibold",
-        hero: "bg-primary text-primary-foreground shadow-lift hover:-translate-y-0.5 hover:bg-primary/95 transition-all font-semibold",
+          "border border-neon-cyan bg-neon-cyan/10 text-neon-cyan shadow-neon-cyan hover:bg-neon-cyan hover:text-primary-foreground font-semibold transition-all",
+        hero: "bg-primary text-primary-foreground shadow-lift hover:-translate-y-0.5 hover:brightness-110 transition-all font-semibold tracking-wide",
         google:
           "border border-google-border bg-google text-google-foreground hover:bg-google/90 font-medium",
       },

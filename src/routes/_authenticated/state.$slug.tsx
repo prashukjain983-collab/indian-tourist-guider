@@ -59,7 +59,7 @@ function StatePage() {
   }
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+    <main key={state.slug} className="animate-page-enter mx-auto max-w-7xl px-4 py-6 sm:px-6">
       <Link
         to="/explore"
         className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-primary"
@@ -69,8 +69,12 @@ function StatePage() {
 
       <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold tracking-wide text-primary uppercase">{state.type}</p>
-          <h1 className="text-4xl font-semibold sm:text-5xl">{state.name}</h1>
+          <p className="text-xs font-semibold tracking-wide text-neon-cyan uppercase">
+            {state.type}
+          </p>
+          <h1 className="neon-text animate-flicker text-4xl font-semibold sm:text-5xl">
+            {state.name}
+          </h1>
           <p className="mt-1 text-muted-foreground">Language: {state.language}</p>
         </div>
         <div className="relative w-full max-w-xs">

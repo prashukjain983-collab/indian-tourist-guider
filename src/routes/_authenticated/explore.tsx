@@ -52,7 +52,7 @@ function ExplorePage() {
       <section className="postcard relative overflow-hidden p-4 sm:p-6">
         <div className="mb-2 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className="text-3xl font-semibold sm:text-4xl">
+            <h1 className="neon-text text-3xl font-semibold sm:text-4xl">
               Where to next{displayName ? `, ${displayName.split(" ")[0]}` : ""}?
             </h1>
             <p className="text-muted-foreground">Click a state to open its map and pick a city.</p>
@@ -70,6 +70,7 @@ function ExplorePage() {
             nameKey="st_nm"
             ariaLabel="Map of India — click a state"
             onSelect={open}
+            zoomOnSelect
             labelMinArea={0.018}
           />
         </div>

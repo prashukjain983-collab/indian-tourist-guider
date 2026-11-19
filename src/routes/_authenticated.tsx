@@ -34,10 +34,10 @@ function AuthenticatedLayout() {
       <header className="sticky top-0 z-30 border-b bg-background/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6">
           <Link to="/explore" className="flex items-center gap-2">
-            <span className="flex size-9 items-center justify-center rounded-xl bg-primary font-display text-lg font-bold text-primary-foreground">
+            <span className="flex size-9 items-center justify-center rounded-xl bg-primary font-display text-lg font-bold text-primary-foreground shadow-lift">
               भ
             </span>
-            <span className="hidden font-display text-lg font-semibold sm:inline">
+            <span className="neon-text hidden font-display text-lg font-semibold sm:inline">
               Indian Tourist Guider
             </span>
           </Link>

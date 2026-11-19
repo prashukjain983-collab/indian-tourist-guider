@@ -43,7 +43,8 @@ function LoginPage() {
           <Compass className="size-3.5" /> Your India travel companion
         </p>
         <h1 className="mt-4 text-4xl leading-[1.05] font-semibold sm:text-5xl lg:text-6xl">
-          Indian Tourist <span className="text-primary italic">Guider</span>
+          <span className="neon-text">Indian Tourist</span>{" "}
+          <span className="neon-text-cyan animate-flicker">Guider</span>
         </h1>
         <p className="mt-4 max-w-md text-lg text-muted-foreground">
           Tap a state, choose a city, and AI MILI tells you what to see, eat and do. Save the places
