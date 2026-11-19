@@ -34,6 +34,12 @@ type Props = {
   className?: string;
   ariaLabel: string;
   onNames?: (names: string[]) => void;
+  /** Regions that always get a glowing marker and a label (e.g. island territories) */
+  highlight?: string[];
+  /** Regions smaller than this share of the map get a glowing marker */
+  markerMaxArea?: number;
+  /** Also label every small-region marker */
+  labelMarkers?: boolean;
 };
 
 type Shape = {
@@ -58,6 +64,9 @@ export function GeoMap({
   className,
   ariaLabel,
   onNames,
+  highlight = [],
+  markerMaxArea = 0.0015,
+  labelMarkers = false,
 }: Props) {
   const [data, setData] = useState<FeatureCollection<Geometry, Record<string, unknown>> | null>(
     null,
@@ -198,6 +207,7 @@ export function GeoMap({
               className={cn(
                 "map-region animate-region-draw",
                 s.palette,
+                (s.area < markerMaxArea || highlight.includes(s.name)) && "map-region-island",
                 (selected === s.name || zoom?.name === s.name) && "map-region-active",
                 zoom && zoom.name !== s.name && "map-region-dim",
               )}
@@ -217,6 +227,47 @@ export function GeoMap({
               }}
             />
           ))}
+          {!zoom &&
+            shapes
+              .filter((s) => s.area < markerMaxArea || highlight.includes(s.name))
+              .map((s) => {
+                const showLabel = labelMarkers || highlight.includes(s.name);
+                return (
+                  <g
+                    key={`m-${s.name}`}
+                    className={cn("cursor-pointer", s.palette)}
+                    onClick={() => choose(s)}
+                    aria-hidden="true"
+                  >
+                    <circle
+                      cx={s.cx}
+                      cy={s.cy}
+                      r={14}
+                      className="map-marker-pulse fill-none"
+                      strokeWidth={2}
+                    />
+                    <circle
+                      cx={s.cx}
+                      cy={s.cy}
+                      r={6}
+                      fillOpacity={0.9}
+                      style={{ filter: "drop-shadow(0 0 6px currentColor)" }}
+                    />
+                    <circle cx={s.cx} cy={s.cy} r={18} fill="transparent" stroke="none" />
+                    {showLabel && (
+                      <text
+                        x={s.cx}
+                        y={s.cy + 30}
+                        textAnchor="middle"
+                        className="pointer-events-none fill-current text-[13px] font-bold"
+                        style={{ paintOrder: "stroke", stroke: "var(--paper)", strokeWidth: 4 }}
+                      >
+                        {s.name}
+                      </text>
+                    )}
+                  </g>
+                );
+              })}
           {!zoom &&
             shapes
               .filter((s) => s.area >= labelMinArea)

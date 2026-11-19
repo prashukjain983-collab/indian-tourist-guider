@@ -57,9 +57,10 @@ function LoginPage() {
               nameKey="st_nm"
               ariaLabel="Map of India"
               labelMinArea={1}
+              highlight={["Andaman and Nicobar Islands", "Lakshadweep"]}
             />
           </div>
-          <div className="absolute right-2 bottom-10 hidden items-center gap-2 rounded-full bg-card px-3 py-1.5 text-sm font-medium shadow-postcard sm:flex">
+          <div className="absolute top-2 right-2 hidden items-center gap-2 rounded-full bg-card px-3 py-1.5 text-sm font-medium shadow-postcard sm:flex">
             <MapPinned className="size-4 text-primary" /> 36 states & union territories
           </div>
         </div>

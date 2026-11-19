@@ -233,6 +233,24 @@
   filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 22px currentColor);
 }
 
+/* Tiny regions (islands, small UTs): thicker glowing outline so they stay visible */
+@utility map-region-island {
+  fill-opacity: 0.75;
+  stroke-width: 2.6;
+  filter: drop-shadow(0 0 5px currentColor) drop-shadow(0 0 12px currentColor);
+}
+
+@keyframes marker-pulse {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@utility map-marker-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: marker-pulse 1.8s ease-out infinite;
+}
+
 @utility map-region-dim {
   opacity: 0.08;
   pointer-events: none;

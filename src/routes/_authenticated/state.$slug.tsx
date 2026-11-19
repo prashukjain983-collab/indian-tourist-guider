@@ -118,6 +118,8 @@ function StatePage() {
               selected={city}
               onSelect={pick}
               onNames={setDistricts}
+              markerMaxArea={0.01}
+              labelMarkers
               labelMinArea={0.03}
               width={700}
               height={700}

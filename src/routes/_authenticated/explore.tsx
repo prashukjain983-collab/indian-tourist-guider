@@ -71,6 +71,7 @@ function ExplorePage() {
             ariaLabel="Map of India — click a state"
             onSelect={open}
             zoomOnSelect
+            highlight={["Andaman and Nicobar Islands", "Lakshadweep"]}
             labelMinArea={0.018}
           />
         </div>
