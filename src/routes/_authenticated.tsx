@@ -3,6 +3,7 @@ import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-rout
 import { BookmarkCheck, LogOut, Map } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
+import { ChatWidget } from "@/components/ChatWidget";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
 
@@ -74,6 +75,11 @@ function AuthenticatedLayout() {
         </div>
       </header>
       <Outlet />
+      <footer className="mx-auto max-w-7xl px-4 pt-6 pb-24 text-xs text-muted-foreground sm:px-6">
+        Indian Tourist Guider · Travel info by AI MILI is a guide — check prices and timings on the
+        booking sites before you travel.
+      </footer>
+      <ChatWidget />
     </div>
   );
 }

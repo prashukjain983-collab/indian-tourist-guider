@@ -1,13 +1,18 @@
-import { useMemo, useState } from "react";
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Landmark, MapPin, Mountain, Search, Sun, UtensilsCrossed } from "lucide-react";
 
 import { CityGuide } from "@/components/CityGuide";
 import { GeoMap } from "@/components/IndiaMap";
 import { Input } from "@/components/ui/input";
-import { STATE_BY_SLUG } from "@/data/states";
+import { RecentCities } from "@/components/RecentCities";
+import { STATE_BY_NAME, STATE_BY_SLUG } from "@/data/states";
+import { useRecordCityView } from "@/lib/history";
 
 export const Route = createFileRoute("/_authenticated/state/$slug")({
+  validateSearch: (search: Record<string, unknown>): { city?: string | undefined } => ({
+    city: typeof search["city"] === "string" ? search["city"].slice(0, 150) : undefined,
+  }),
   loader: ({ params }) => {
     const state = STATE_BY_SLUG.get(params.slug);
     if (!state) throw notFound();
@@ -37,7 +42,24 @@ export const Route = createFileRoute("/_authenticated/state/$slug")({
 
 function StatePage() {
   const { state } = Route.useLoaderData();
-  const [city, setCity] = useState<string | null>(null);
+  const search = Route.useSearch();
+  const navigate = useNavigate();
+  const recordView = useRecordCityView();
+  const [city, setCity] = useState<string | null>(search.city ?? null);
+  const recorded = useRef<string | null>(null);
+
+  useEffect(() => {
+    setCity(search.city ?? null);
+  }, [search.city, state.slug]);
+
+  useEffect(() => {
+    const key = city ? `${state.name}|${city}` : null;
+    if (key && recorded.current !== key) {
+      recorded.current = key;
+      void recordView(state.name, city!);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [city, state.name]);
   const [districts, setDistricts] = useState<string[]>([]);
   const [query, setQuery] = useState("");
 
@@ -47,9 +69,28 @@ function StatePage() {
     return q ? all.filter((n) => n.toLowerCase().includes(q)).slice(0, 8) : [];
   }, [state, districts, query]);
 
+  const places = useMemo(
+    () => Array.from(new Set([...state.touristPlaces, ...state.monuments])),
+    [state],
+  );
+
+  function pickRecent(stateName: string, cityName: string) {
+    const target = STATE_BY_NAME.get(stateName);
+    if (!target) return;
+    if (target.slug === state.slug) pick(cityName);
+    else
+      navigate({ to: "/state/$slug", params: { slug: target.slug }, search: { city: cityName } });
+  }
+
   function pick(name: string) {
     setCity(name);
     setQuery("");
+    navigate({
+      to: "/state/$slug",
+      params: { slug: state.slug },
+      search: { city: name },
+      replace: true,
+    });
     if (window.innerWidth < 1024) {
       setTimeout(
         () => document.getElementById("city-guide")?.scrollIntoView({ behavior: "smooth" }),
@@ -146,7 +187,20 @@ function StatePage() {
 
         <section id="city-guide" className="space-y-6">
           {city ? (
-            <CityGuide key={city} state={state.name} city={city} onClose={() => setCity(null)} />
+            <CityGuide
+              key={`${state.slug}-${city}`}
+              state={state.name}
+              city={city}
+              places={places}
+              onClose={() =>
+                navigate({
+                  to: "/state/$slug",
+                  params: { slug: state.slug },
+                  search: {},
+                  replace: true,
+                })
+              }
+            />
           ) : (
             <div className="postcard stamp-border relative overflow-hidden p-6">
               <div className="rounded-xl bg-card p-5">
@@ -158,6 +212,8 @@ function StatePage() {
               </div>
             </div>
           )}
+
+          <RecentCities onPick={pickRecent} />
 
           <div className="grid gap-4 sm:grid-cols-2">
             <Fact
@@ -189,7 +245,7 @@ function Fact({ icon, title, items }: { icon: React.ReactNode; title: string; it
   if (!items.length) return null;
   return (
     <div className="postcard p-4">
-      <h3 className="flex items-center gap-2 text-sm font-semibold text-primary [&_svg]:size-4">
+      <h3 className="flex items-center gap-2 text-sm font-semibold text-neon-cyan [&_svg]:size-4">
         {icon} {title}
       </h3>
       <ul className="mt-2 space-y-1 text-sm text-muted-foreground">

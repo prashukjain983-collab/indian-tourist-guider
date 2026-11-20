@@ -3,6 +3,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Search } from "lucide-react";
 
 import { GeoMap } from "@/components/IndiaMap";
+import { RecentCities } from "@/components/RecentCities";
 import { Input } from "@/components/ui/input";
 import { STATES, STATE_BY_NAME } from "@/data/states";
 import { useAuth } from "@/lib/auth";
@@ -109,6 +110,8 @@ function ExplorePage() {
             </ul>
           )}
         </div>
+
+        <RecentCities />
 
         <div className="postcard min-h-[220px] p-5">
           {preview ? (
