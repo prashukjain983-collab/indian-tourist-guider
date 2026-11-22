@@ -28,3 +28,11 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- Accounts and saved data live in Lovable Cloud (Postgres with per-user RLS), not the user's local MySQL — a published website cannot reach a local database.
+- India and state maps are drawn in SVG from bundled GeoJSON, not a map tile provider — keeps the hand-drawn colorful look and works offline of map APIs.
+- All AI calls (city guide, trip plan, AI MILI chat) run server-side through the Lovable AI Gateway helpers in `src/lib/ai/`; the browser never sees keys.
+- AI MILI chat is one persisted conversation per user, stored as AI SDK UIMessages in `chat_messages` (text `message_id`, DB-generated UUID `id`).
+- Live ticket prices use TinyFish web agents through the connector gateway (`src/lib/live-fares*`), started async and polled from the client — runs take minutes, too long for one request.

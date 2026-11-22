@@ -13,4 +13,6 @@
 - [ ] Save trip plan to My places
 - [ ] History panel: last 5 cities viewed
 - [ ] Professional, consistent layout across pages
+- [ ] Live ticket prices (TinyFish) in the trip planner
+- [ ] My places: show saved trip details
 - [ ] End-to-end check signed in (map → city → AI → save)

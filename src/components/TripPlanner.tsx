@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { type TransportMode, intercityLinks, localRideLinks } from "@/lib/booking-links";
 import { useAiStream } from "@/lib/use-ai-stream";
+import { LiveFares } from "@/components/LiveFares";
 import { cn } from "@/lib/utils";
 
 const MODES: { id: TransportMode; label: string; icon: React.ReactNode }[] = [
@@ -310,6 +311,8 @@ export function TripPlanner({ state, city, places, cityInfo }: Props) {
           ))}
         </div>
       </section>
+
+      {mode && mode !== "car" && <LiveFares from={from} to={city} mode={mode} />}
 
       <section className="rounded-xl border p-4">
         <h3 className="flex items-center gap-2 text-sm font-semibold">
